@@ -1,6 +1,8 @@
 package modelo;
 
 import javax.persistence.*;
+
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -9,11 +11,15 @@ public class Plato {
 	@Id
 	private String id;
 	private String nombre;
+	@Column(length = 1000)
 	private String descripcion;
 	private double precio;
 	private String categoria;
 	@Column(name = "en_carta")
 	private boolean enCarta;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "restaurante_id")
+	private Restaurante restaurante;
 
 	public Plato() {
 		this.id = UUID.randomUUID().toString();
@@ -48,32 +54,59 @@ public class Plato {
 		return descripcion;
 	}
 
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public void setDescripcion(String d) {
+		this.descripcion = d;
 	}
 
 	public double getPrecio() {
 		return precio;
 	}
 
-	public void setPrecio(double precio) {
-		this.precio = precio;
+	public void setPrecio(double p) {
+		this.precio = p;
 	}
 
 	public String getCategoria() {
 		return categoria;
 	}
 
-	public void setCategoria(String categoria) {
-		this.categoria = categoria;
+	public void setCategoria(String c) {
+		this.categoria = c;
 	}
 
 	public boolean isEnCarta() {
 		return enCarta;
 	}
 
-	public void setEnCarta(boolean enCarta) {
-		this.enCarta = enCarta;
+	public void setEnCarta(boolean e) {
+		this.enCarta = e;
 	}
 
+	public Restaurante getRestaurante() {
+		return restaurante;
+	}
+
+	public void setRestaurante(Restaurante r) {
+		this.restaurante = r;
+	}
+
+	@Override
+	public String toString() {
+		return "Plato[" + id + ", " + nombre + ", " + precio + "€, " + categoria + ", enCarta=" + enCarta + "]";
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof Plato))
+			return false;
+		Plato that = (Plato) o;
+		return Objects.equals(id, that.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
 }

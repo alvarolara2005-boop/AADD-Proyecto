@@ -1,15 +1,15 @@
 package modelo;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "restaurantes")
 public class Restaurante {
-
 	@Id
 	private String id;
 	private String nombre;
@@ -18,6 +18,7 @@ public class Restaurante {
 	private String direccion;
 	private double longitud;
 	private double latitud;
+	@Column(length = 2000)
 	private String descripcion;
 
 	@Enumerated(EnumType.STRING)
@@ -28,11 +29,10 @@ public class Restaurante {
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "puntos_interes", joinColumns = @JoinColumn(name = "restaurante_id"))
-	private List<PuntoInteres> puntosInteres = new ArrayList<>();
+	private Set<PuntoInteres> puntosInteres = new HashSet<>();
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "restaurante_id")
-	private List<Plato> carta = new ArrayList<>();
+	@OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	private Set<Plato> carta = new HashSet<>();
 
 	public Restaurante() {
 		this.id = UUID.randomUUID().toString();
@@ -53,14 +53,13 @@ public class Restaurante {
 	}
 
 	public double getPrecioMedio() {
-		List<Plato> enCarta = carta.stream()
-				.filter(Plato::isEnCarta)
-				.collect(Collectors.toList());
+		List<Plato> enCarta = carta.stream().filter(Plato::isEnCarta).collect(Collectors.toList());
 		if (enCarta.isEmpty())
 			return -1;
 		return enCarta.stream().mapToDouble(Plato::getPrecio).average().orElse(-1);
 	}
 
+	// Getters/setters
 	public String getId() {
 		return id;
 	}
@@ -73,88 +72,92 @@ public class Restaurante {
 		return nombre;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setNombre(String n) {
+		this.nombre = n;
 	}
 
 	public String getPropietario() {
 		return propietario;
 	}
 
-	public void setPropietario(String propietario) {
-		this.propietario = propietario;
+	public void setPropietario(String p) {
+		this.propietario = p;
 	}
 
 	public String getTelefono() {
 		return telefono;
 	}
 
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
+	public void setTelefono(String t) {
+		this.telefono = t;
 	}
 
 	public String getDireccion() {
 		return direccion;
 	}
 
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
+	public void setDireccion(String d) {
+		this.direccion = d;
 	}
 
 	public double getLongitud() {
 		return longitud;
 	}
 
-	public void setLongitud(double longitud) {
-		this.longitud = longitud;
+	public void setLongitud(double l) {
+		this.longitud = l;
 	}
 
 	public double getLatitud() {
 		return latitud;
 	}
 
-	public void setLatitud(double latitud) {
-		this.latitud = latitud;
+	public void setLatitud(double l) {
+		this.latitud = l;
 	}
 
 	public String getDescripcion() {
 		return descripcion;
 	}
 
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public void setDescripcion(String d) {
+		this.descripcion = d;
 	}
 
 	public TipoCocina getTipoCocina() {
 		return tipoCocina;
 	}
 
-	public void setTipoCocina(TipoCocina tipoCocina) {
-		this.tipoCocina = tipoCocina;
+	public void setTipoCocina(TipoCocina t) {
+		this.tipoCocina = t;
 	}
 
 	public String getHorario() {
 		return horario;
 	}
 
-	public void setHorario(String horario) {
-		this.horario = horario;
+	public void setHorario(String h) {
+		this.horario = h;
 	}
 
-	public List<PuntoInteres> getPuntosInteres() {
+	public Set<PuntoInteres> getPuntosInteres() {
 		return puntosInteres;
 	}
 
-	public void setPuntosInteres(List<PuntoInteres> puntosInteres) {
-		this.puntosInteres = puntosInteres;
+	public void setPuntosInteres(Set<PuntoInteres> p) {
+		this.puntosInteres = p;
 	}
 
-	public List<Plato> getCarta() {
+	public Set<Plato> getCarta() {
 		return carta;
 	}
 
-	public void setCarta(List<Plato> carta) {
-		this.carta = carta;
+	public void setCarta(Set<Plato> c) {
+		this.carta = c;
 	}
 
+	@Override
+	public String toString() {
+		return "Restaurante[" + id + ", " + nombre + ", " + tipoCocina + ", " + direccion + "]";
+	}
 }
