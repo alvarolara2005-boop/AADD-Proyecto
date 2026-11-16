@@ -22,4 +22,7 @@ public interface RepositorioRestaurantes {
 	List<Restaurante> getByPrecioMedioMax(double precioMax) throws RepositorioException;
 
 	List<Restaurante> getByDireccion(String direccion) throws RepositorioException;
+	
+	List<Restaurante> getByPropietario(String propietario) throws RepositorioException;
+
 }

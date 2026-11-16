@@ -126,6 +126,13 @@ public class RepositorioRestaurantesJPA implements RepositorioRestaurantes {
 		return getAll().stream().filter(r -> r.getDireccion().toLowerCase().contains(direccion.toLowerCase()))
 				.collect(Collectors.toList());
 	}
+	
+	@Override
+	public List<Restaurante> getByPropietario(String propietario) throws RepositorioException {
+	    return getAll().stream()
+	            .filter(r -> r.getPropietario().equalsIgnoreCase(propietario))
+	            .collect(Collectors.toList());
+	}
 
 	public void close() {
 		if (emf != null && emf.isOpen())

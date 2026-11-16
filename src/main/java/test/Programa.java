@@ -23,8 +23,8 @@ public class Programa {
 
 		//  JPA, si lo queremos lo descmentamos:
 		RepositorioRestaurantes rr = new RepositorioRestaurantesJPA();
-		RepositorioPlatos rp = new RepositorioPlatosJPA();
-		ServicioRestaurantes servicio = new ServicioRestaurantesImpl(rr, rp, fuente);
+		//RepositorioPlatos rp = new RepositorioPlatosJPA();
+		ServicioRestaurantes servicio = new ServicioRestaurantesImpl(rr, fuente);
 
 		try {
 			// 1. Alta restaurante

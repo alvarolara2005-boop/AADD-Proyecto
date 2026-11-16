@@ -9,12 +9,12 @@ import java.util.stream.Collectors;
 public class ServicioRestaurantesImpl implements ServicioRestaurantes {
 
 	private final RepositorioRestaurantes repoRestaurantes;
-	private final RepositorioPlatos repoPlatos;
+	// private final RepositorioPlatos repoPlatos;
 	private final FuentePuntosInteres fuentePuntos;
 
-	public ServicioRestaurantesImpl(RepositorioRestaurantes rr, RepositorioPlatos rp, FuentePuntosInteres fp) {
+	public ServicioRestaurantesImpl(RepositorioRestaurantes rr, FuentePuntosInteres fp) {
 		this.repoRestaurantes = rr;
-		this.repoPlatos = rp;
+		// this.repoPlatos = rp;
 		this.fuentePuntos = fp;
 	}
 
@@ -134,11 +134,21 @@ public class ServicioRestaurantesImpl implements ServicioRestaurantes {
 	public List<Plato> consultarCarta(String restauranteId, Double precioMax, String categoria, String texto)
 			throws Exception {
 		Restaurante r = repoRestaurantes.getById(restauranteId);
-		return r.getCarta().stream().filter(Plato::isEnCarta)
+
+		// Convertimos los textos vacíos a null para que no interfieran en el filtro
+		String catFiltro = (categoria == null || categoria.trim().isEmpty()) ? null : categoria.trim();
+		String textoFiltro = (texto == null || texto.trim().isEmpty()) ? null : texto.trim().toLowerCase();
+
+		return r.getCarta().stream().filter(Plato::isEnCarta) // Solo platos activos en la carta
 				.filter(p -> precioMax == null || p.getPrecio() <= precioMax)
-				.filter(p -> categoria == null || p.getCategoria().equalsIgnoreCase(categoria))
-				.filter(p -> texto == null || p.getNombre().toLowerCase().contains(texto.toLowerCase())
-						|| p.getDescripcion().toLowerCase().contains(texto.toLowerCase()))
+				.filter(p -> catFiltro == null || p.getCategoria().equalsIgnoreCase(catFiltro))
+				.filter(p -> textoFiltro == null || p.getNombre().toLowerCase().contains(textoFiltro)
+						|| p.getDescripcion().toLowerCase().contains(textoFiltro))
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public List<Restaurante> getRestaurantesPropietario(String propietario) throws Exception {
+		return repoRestaurantes.getByPropietario(propietario);
 	}
 }

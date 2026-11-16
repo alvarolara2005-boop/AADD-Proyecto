@@ -18,7 +18,6 @@ public interface ServicioRestaurantes {
 
 	Restaurante recuperarRestaurante(String id) throws Exception;
 
-
 	String altaPlato(String restauranteId, String nombre, String descripcion, String categoria, double precio)
 			throws Exception;
 
@@ -29,9 +28,11 @@ public interface ServicioRestaurantes {
 
 	List<Plato> recuperarPlatosExcluidos(String restauranteId) throws Exception;
 
-
 	List<RestauranteResumen> buscarRestaurantes(String nombre, String tipoCocina, Double precioMax, String direccion)
 			throws Exception;
 
 	List<Plato> consultarCarta(String restauranteId, Double precioMax, String categoria, String texto) throws Exception;
+
+	List<Restaurante> getRestaurantesPropietario(String propietario) throws Exception;
+
 }

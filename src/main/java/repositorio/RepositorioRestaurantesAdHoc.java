@@ -69,4 +69,11 @@ public class RepositorioRestaurantesAdHoc implements RepositorioRestaurantes {
             .filter(r -> r.getDireccion().toLowerCase().contains(d))
             .collect(Collectors.toList());
     }
+    
+    @Override
+    public List<Restaurante> getByPropietario(String propietario) throws RepositorioException {
+        return getAll().stream()
+                .filter(r -> r.getPropietario().equalsIgnoreCase(propietario))
+                .collect(Collectors.toList());
+    }
 }
