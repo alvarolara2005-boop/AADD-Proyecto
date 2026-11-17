@@ -27,30 +27,30 @@ Antes de ejecutar el proyecto, asegúrate de tener instalado y configurado:
 ### 1. Base de Datos (MySQL 8)
 Abre MySQL Workbench o tu cliente de consola y crea la base de datos con el nombre exigido por el enunciado (ajusta los apellidos):
 
-sql
+```sql
 CREATE DATABASE tricliniumLaraLara
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_unicode_ci;
-sql
+```
 
 ### 2. Configuración de JPA
 Edita el archivo src/main/resources/META-INF/persistence.xml para indicar tus credenciales de MySQL:
 
-xml
+```xml
 <property name="javax.persistence.jdbc.url" 
           value="jdbc:mysql://localhost:3306/tricliniumLaraLara?useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true"/>
 <property name="javax.persistence.jdbc.user" value="root"/>
 <property name="javax.persistence.jdbc.password" value="FacultadInfo12"/>
-```xml
+```
 
 ### 3. Cuenta GeoNames
 Para que funcione la asignación de puntos de interés, la cuenta debe tener habilitado el webservice gratuito:
-java
+```java
 private static final String GEONAMES_USER = "alvaro.laral";
-java
+```
 
 ### Estructura del proyecto
-text
+```text
 tricliniumLaraLara/
 ├── pom.xml
 └── src/
@@ -67,7 +67,7 @@ tricliniumLaraLara/
     └── test/
         └── java/
 
-    
+``` 
 ### Decisiones de diseño aplicadas
 El proyecto cumple estrictamente con los requisitos de diseño exigidos:
 
